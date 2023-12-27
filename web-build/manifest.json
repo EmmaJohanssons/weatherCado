@@ -1,0 +1,8 @@
+{
+  "display": "standalone",
+  "lang": "en",
+  "name": "weathercado",
+  "short_name": "weathercado",
+  "start_url": "/?utm_source=web_app_manifest",
+  "orientation": "portrait"
+}

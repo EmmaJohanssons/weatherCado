@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.js": "/static/js/main.78a7bdfd.js",
+    "static/js/108.8de18852.js": "/static/js/108.8de18852.js",
+    "static/media/familywalk2.gif": "/static/media/familywalk2.dfb6463d79dfd7bd4883.gif",
+    "static/media/clouds.png": "/static/media/clouds.4602eca4b6171ece67d5.png",
+    "static/media/avobee.png": "/static/media/avobee.9c2004a3c51d7224fd0e.png",
+    "static/media/avoangry.png": "/static/media/avoangry.9e37c08a391d854e4734.png",
+    "static/media/avorain.png": "/static/media/avorain.1297166e948b44a20aa2.png",
+    "static/media/avofinger.png": "/static/media/avofinger.40a8d2dc41078161a8ad.png",
+    "static/media/avothunder.png": "/static/media/avothunder.6d2108da54a8c9e89127.png",
+    "static/media/avosummer.png": "/static/media/avosummer.2ed039c4334cfc0059b9.png",
+    "static/media/snow.gif": "/static/media/snow.54eb305948bc71a83b06.gif",
+    "static/media/cloudyavo.png": "/static/media/cloudyavo.7ae12d833c34248af8c2.png",
+    "static/media/rain.gif": "/static/media/rain.725bb68212114f922d05.gif",
+    "index.html": "/index.html",
+    "serve.json": "/serve.json",
+    "manifest.json": "/manifest.json",
+    "main.78a7bdfd.js.map": "/static/js/main.78a7bdfd.js.map",
+    "108.8de18852.js.map": "/static/js/108.8de18852.js.map"
+  },
+  "entrypoints": [
+    "static/js/108.8de18852.js",
+    "static/js/main.78a7bdfd.js"
+  ]
+}
