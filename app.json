@@ -4,27 +4,25 @@
     "slug": "weathercado",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+    "android": {},
+    "web": {},
+    "extra": {
+      "eas": {
+        "projectId": "45e6928f-465c-4cf4-97a0-e53dee5e4a02"
       }
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "owner": "emma-johanssons",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/45e6928f-465c-4cf4-97a0-e53dee5e4a02"
     }
   }
 }
