@@ -1,4 +1,8 @@
 {
+  "version": 2,
   "builds": [{ "src": "package.json", "use": "@vercel/node" }],
-  "routes": [{ "src": "/.*", "dest": "package.json" }]
+  "routes": [{ "src": "/.*", "dest": "package.json" }],
+  "env": {
+    "EXPO_ROOT": "."
+  }
 }
