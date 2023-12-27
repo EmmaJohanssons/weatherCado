@@ -5,7 +5,10 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  KeyboardAvoidingView,
   StyleSheet,
+  Platform,
+  Keyboard,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -35,6 +38,7 @@ const WeatherScreen = ({ route }) => {
         setWeather(result);
         setError("");
         setTemperature(result.main.temp);
+        Keyboard.dismiss();
       }
 
       console.log(result);
@@ -48,7 +52,13 @@ const WeatherScreen = ({ route }) => {
       });
     }
   };
+
   useEffect(() => {
+    if (!city) {
+      setError("");
+      setWeather(null);
+      return;
+    }
     if (city) {
       fetchWeather(city);
     }
@@ -98,105 +108,106 @@ const WeatherScreen = ({ route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      {imgUrl && (
-        <Image
-          source={imgUrl}
-          style={[
-            weather?.weather[0].main === "Snow"
-              ? styles.snowImg
-              : styles.normal,
-            weather?.weather[0].main === "Rain"
-              ? styles.rainImg
-              : styles.normal,
-            weather?.weather[0].main === "Clouds"
-              ? styles.cloudImg
-              : styles.normal,
-            weather?.weather[0].main === "Clear"
-              ? styles.clearImg
-              : styles.normal,
-          ]}
-        />
-      )}
-
-      {iconUrl && (
-        <View>
-          <View style={styles.temperatureContainer}>
-            <Text style={styles.temperature}>{convertTemperature()}</Text>
-            <Text style={styles.temperatureName}>{weather.name}</Text>
-            <View style={styles.weatherContainer}>
-              <Text style={styles.weatherLine}></Text>
-              <Text style={styles.temperatureWeather}>
-                {weather.weather[0].main}
-              </Text>
-              <Text style={styles.weatherLine}></Text>
-            </View>
-          </View>
-
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <View style={styles.container}>
+        {imgUrl && (
           <Image
-            source={iconUrl}
+            source={imgUrl}
             style={[
               weather?.weather[0].main === "Snow"
-                ? styles.snowIcons
+                ? styles.snowImg
                 : styles.normal,
               weather?.weather[0].main === "Rain"
-                ? styles.rainIcons
+                ? styles.rainImg
                 : styles.normal,
               weather?.weather[0].main === "Clouds"
-                ? styles.cloudyAvo
+                ? styles.cloudImg
                 : styles.normal,
               weather?.weather[0].main === "Clear"
-                ? styles.clearIcon
+                ? styles.clearImg
                 : styles.normal,
             ]}
           />
+        )}
+
+        {iconUrl && (
+          <View>
+            <View style={styles.temperatureContainer}>
+              <Text style={styles.temperature}>{convertTemperature()}</Text>
+              <Text style={styles.temperatureName}>{weather.name}</Text>
+              <View style={styles.weatherContainer}>
+                <Text style={styles.weatherLine}></Text>
+                <Text style={styles.temperatureWeather}>
+                  {weather.weather[0].main}
+                </Text>
+                <Text style={styles.weatherLine}></Text>
+              </View>
+            </View>
+
+            <Image
+              source={iconUrl}
+              style={[
+                weather?.weather[0].main === "Snow"
+                  ? styles.snowIcons
+                  : styles.normal,
+                weather?.weather[0].main === "Rain"
+                  ? styles.rainIcons
+                  : styles.normal,
+                weather?.weather[0].main === "Clouds"
+                  ? styles.cloudyAvo
+                  : styles.normal,
+                weather?.weather[0].main === "Clear"
+                  ? styles.clearIcon
+                  : styles.normal,
+              ]}
+            />
+          </View>
+        )}
+
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            value={text}
+            placeholder="Find a city"
+            onChangeText={(text) => setText(text)}
+          />
+          <TouchableOpacity
+            style={styles.searchButton}
+            onPress={() => {
+              if (text !== "") {
+                setText("");
+
+                setTimeout(() => {
+                  fetchWeather(text);
+                }, 100);
+              }
+            }}
+          >
+            <Text style={styles.buttonText}>Search</Text>
+          </TouchableOpacity>
+          {error !== "" && <Text style={styles.errorText}>{error}</Text>}
         </View>
-      )}
-
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={text}
-          placeholder="Find a city"
-          onChangeText={(text) => setText(text)}
-        />
-        <TouchableOpacity
-          style={styles.searchButton}
-          onPress={() => {
-            if (text !== "") {
-              setText("");
-
-              setTimeout(() => {
-                fetchWeather(text);
-              }, 100);
-            }
-          }}
-        >
-          <Text style={styles.buttonText}>Search</Text>
-        </TouchableOpacity>
-        {error !== "" && <Text style={styles.errorText}>{error}</Text>}
+        {weather && (
+          <React.Fragment>
+            <TouchableOpacity
+              onPress={toggleTemperatureUnit}
+              style={styles.button}
+            >
+              <Text style={styles.temperatureToggle}>
+                {isCelsius ? (
+                  <Text>press for °F</Text>
+                ) : (
+                  <Text>press for °C</Text>
+                )}
+              </Text>
+            </TouchableOpacity>
+          </React.Fragment>
+        )}
       </View>
-
-      {weather && (
-        <React.Fragment>
-          <TouchableOpacity
-            onPress={toggleTemperatureUnit}
-            style={styles.button}
-          >
-            <Text style={styles.temperatureToggle}>
-              <Text>{isCelsius ? `press for °F` : `press for °C`}</Text>
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Home")}
-            style={styles.button}
-          >
-            <Text style={styles.temperatureToggle}>Back to Home</Text>
-          </TouchableOpacity>
-        </React.Fragment>
-      )}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -214,11 +225,10 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   snowIcons: {
-    width: 230,
-    height: 360,
-    top: 50,
-    left: 100,
-    margin: 40,
+    width: 200,
+    height: 340,
+    left: 95,
+    marginBottom: 200,
   },
   rainImg: {
     position: "absolute",
@@ -227,37 +237,36 @@ const styles = StyleSheet.create({
     height: "80%",
   },
   rainIcons: {
-    width: 330,
-    height: 530,
+    width: 300,
+    height: 400,
     bottom: 30,
-    marginBottom: 80,
+    marginBottom: 120,
   },
   cloudyAvo: {
-    width: 290,
-    height: 570,
+    width: 250,
+    height: 550,
     left: 50,
-    bottom: 150,
+    bottom: 185,
   },
   cloudImg: {
     position: "absolute",
     width: "100%",
-    height: "100%",
+    height: "80%",
   },
   clearImg: {
     position: "absolute",
     width: "20%",
     height: "30%",
-    bottom: 500,
-    right: 60,
+    bottom: 200,
+    left: 120,
     zIndex: 1,
   },
   clearIcon: {
     width: 350,
     height: 400,
-    bottom: 80,
+    bottom: 93,
     margin: 60,
   },
-
   temperatureContainer: {
     display: "flex",
     justifyContent: "center",
@@ -276,6 +285,8 @@ const styles = StyleSheet.create({
   },
   weatherContainer: {
     display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     flexDirection: "row",
     paddingTop: 20,
   },
@@ -301,12 +312,23 @@ const styles = StyleSheet.create({
   },
   button: {
     zIndex: 2,
-    bottom: 40,
+    bottom: 50,
   },
   inputContainer: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    zIndex: 2,
+    ...Platform.select({
+      ios: {
+        position: "absolute",
+        bottom: 150,
+      },
+      android: {
+        position: "absolute",
+        bottom: 90,
+      },
+    }),
   },
   input: {
     fontSize: 20,
@@ -320,21 +342,19 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(160,82,45)",
     borderRadius: 20,
     width: 200,
-    bottom: 120,
-    position: "absolute",
+    bottom: -50,
   },
   searchButton: {
     borderStyle: "solid",
     borderColor: "rgb(136 19 55)",
     borderWidth: 2,
     padding: 10,
-    PaddingLeft: 10,
+    paddingLeft: 10,
     paddingRight: 10,
     backgroundColor: "rgb(160,82,45)",
     borderRadius: 20,
     width: 100,
-    bottom: 60,
-    position: "absolute",
+    bottom: -60,
   },
   buttonText: {
     textAlign: "center",

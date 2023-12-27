@@ -6,6 +6,9 @@ import {
   Image,
   TextInput,
   StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+  Platform,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
@@ -15,42 +18,50 @@ const HomeScreen = ({ route }) => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
-      {errorMessage ? (
-        <React.Fragment>
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        keyboardShouldPersistTaps="handled"
+      >
+        {errorMessage ? (
+          <React.Fragment>
+            <Image
+              source={require("../assets/familywalk2.gif")}
+              style={{ width: 300, height: 300, marginTop: 60, marginLeft: 30 }}
+            />
+            <Text style={styles.errorText}>{errorMessage}</Text>
+          </React.Fragment>
+        ) : (
           <Image
             source={require("../assets/familywalk2.gif")}
             style={{ width: 300, height: 300, marginTop: 60, marginLeft: 30 }}
           />
-          <Text style={styles.errorText}>{errorMessage}</Text>
-        </React.Fragment>
-      ) : (
-        <Image
-          source={require("../assets/familywalk2.gif")}
-          style={{ width: 300, height: 300, marginTop: 60, marginLeft: 30 }}
-        />
-      )}
+        )}
 
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          value={text}
-          placeholder="Find a city"
-          onChangeText={(text) => setText(text)}
-        />
-        <TouchableOpacity
-          style={styles.searchButton}
-          onPress={() => {
-            if (text !== "") {
-              navigation.navigate("Weather", { city: text });
-              setText("");
-            }
-          }}
-        >
-          <Text style={styles.buttonText}>Search Weather</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+        <View style={styles.inputContainer}>
+          <TextInput
+            style={styles.input}
+            value={text}
+            placeholder="Find a city"
+            onChangeText={(text) => setText(text)}
+          />
+          <TouchableOpacity
+            style={styles.searchButton}
+            onPress={() => {
+              if (text !== "") {
+                navigation.navigate("Weather", { city: text });
+                setText("");
+              }
+            }}
+          >
+            <Text style={styles.buttonText}>Search Weather</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -60,6 +71,11 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(210,248,210)",
     alignItems: "center",
     justifyContent: "space-around",
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: "space-around",
+    bottom: 90,
   },
   title: {
     textAlign: "center",
